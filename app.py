@@ -79,12 +79,3 @@ if selected_stock and selected_stock != '':
     st.plotly_chart(time_fig)
 else:
     st.write("Select a stock to view its time series data.")
-
-# Reset button functionality to reliably reset session state variables
-if st.button('Reset'):
-    # Reset the session state variables to defaults
-    st.session_state.selected_stock = ''
-    st.session_state.selected_sector = 'All'
-    # Manually clear out the input fields for the current view
-    selected_sector = 'All'
-    selected_stock = ''

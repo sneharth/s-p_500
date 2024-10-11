@@ -77,7 +77,7 @@ if selected_stock and selected_stock != '':
         z=stock_data['Trend Indicator'],
         mode='markers',
         marker=dict(size=8, color='red', symbol='circle'),  # Highlight the selected point with a distinct color
-        name=f"Selected: {selected_stock} (Cluster {cluster_type})",
+        name=f"Selected: {selected_stock}\n(Cluster {cluster_type})",
         text=hover_text,
         hoverinfo='text',
         opacity=1.0  # Full opacity for the selected point

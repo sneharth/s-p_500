@@ -47,6 +47,13 @@ selected_stock = st.selectbox(
 st.session_state.selected_stock = selected_stock
 
 # 3D Plot with cumulative return, annualized volatility, and trend indicator
+
+color_map = { "Stable Low Growth" : "red",
+           "Moderate Growth High Volatility" : "green",
+           "Underperforming High Risk" : "blue",
+           "Exceptional High Growth Outliers": "purple",
+           "Consistent High Growth" : "orange",
+           "High Growth Volatile" : "violet"}
 fig = px.scatter_3d(
     cluster_df, 
     x='Cumulative Return', 
@@ -54,7 +61,8 @@ fig = px.scatter_3d(
     z='Trend Indicator',
     color='Cluster_Type', 
     hover_name='Security',
-    color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
+    # color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
+    color_discrete_map=color_map
     opacity=0.6  # Set lower opacity for all points
 )
 

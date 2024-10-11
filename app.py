@@ -52,7 +52,7 @@ fig = px.scatter_3d(
     x='Cumulative Return', 
     y='Annualized Volatility', 
     z='Trend Indicator',
-    color='Cluster', 
+    color='Cluster_Type', 
     hover_name='Security',
     color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
     opacity=0.6  # Set lower opacity for all points
@@ -64,9 +64,9 @@ if selected_stock and selected_stock != '':
     cluster_number = stock_data['Cluster'].iloc[0]
     hover_text = (
         f"<b>{selected_stock}</b><br><br>"
-        f"Cumulative Return={stock_data['Cumulative Return'].iloc[0]}<br>"
-        f"Annualized Volatility={stock_data['Annualized Volatility'].iloc[0]}<br>"
-        f"Trend Indicator={stock_data['Trend Indicator'].iloc[0]}<br>"
+        f"Cumulative Return={stock_data['Cumulative Return'].iloc[0]:.2f}<br>"
+        f"Annualized Volatility={stock_data['Annualized Volatility'].iloc[0]:.2f}<br>"
+        f"Trend Indicator={stock_data['Trend Indicator'].iloc[0]:.2f}<br>"
         f"Cluster={cluster_number}"
     )
     

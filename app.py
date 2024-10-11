@@ -58,6 +58,9 @@ fig = px.scatter_3d(
     color_discrete_sequence=px.colors.qualitative.T10  # Use a distinct color palette
 )
 
+# Optionally remove the legend
+fig.update_layout(showlegend=False)
+
 # Update plot if a stock is selected to show only that stock
 if selected_stock and selected_stock != '':
     stock_data = cluster_df[cluster_df['Security'] == selected_stock]
@@ -70,6 +73,7 @@ if selected_stock and selected_stock != '':
         category_orders={"Cluster": [0, 1, 2, 3, 4, 5]},
         color_discrete_sequence=px.colors.qualitative.T10
     )
+    fig.update_layout(showlegend=False)  # Ensure legend is hidden for the selected stock plot
 
 # Display the 3D plot
 st.plotly_chart(fig, use_container_width=True)
@@ -84,6 +88,9 @@ else:
 
 # Reset button functionality to reliably reset session state variables
 if st.button('Reset'):
+    # Reset the session state variables to defaults without rerunning the entire app
     st.session_state.selected_stock = ''
     st.session_state.selected_sector = 'All'
-    st.experimental_rerun()  # Force a rerun to ensure the interface is fully reset
+    # Manually clear out the input fields for the current view
+    selected_stock = ''
+    selected_sector = 'All'

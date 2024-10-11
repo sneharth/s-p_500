@@ -64,9 +64,9 @@ if selected_stock and selected_stock != '':
     cluster_number = stock_data['Cluster'].iloc[0]
     hover_text = (
         f"<b>{selected_stock}</b><br><br>"
-        f"Cumulative Return={stock_data['Cumulative Return'].iloc[0]:.2f}<br>"
-        f"Annualized Volatility={stock_data['Annualized Volatility'].iloc[0]:.2f}<br>"
-        f"Trend Indicator={stock_data['Trend Indicator'].iloc[0]:.2f}<br>"
+        f"Cumulative Return={stock_data['Cumulative Return'].iloc[0]}<br>"
+        f"Annualized Volatility={stock_data['Annualized Volatility'].iloc[0]}<br>"
+        f"Trend Indicator={stock_data['Trend Indicator'].iloc[0]}<br>"
         f"Cluster={cluster_number}"
     )
     

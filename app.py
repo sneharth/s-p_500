@@ -62,6 +62,7 @@ fig = px.scatter_3d(
 if selected_stock and selected_stock != '':
     stock_data = cluster_df[cluster_df['Security'] == selected_stock]
     cluster_type = stock_data['Cluster_Type'].iloc[0]
+    cluster_number = stock_data['Cluster'].iloc[0]
     hover_text = (
         f"<b>{selected_stock}</b><br><br>"
         f"Cumulative Return={stock_data['Cumulative Return'].iloc[0]:.2f}<br>"

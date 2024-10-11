@@ -52,7 +52,7 @@ color_map = { "Stable Low Growth" : "#b5de2b",
            "Moderate Growth High Volatility" : "#482878",
            "Underperforming High Risk" : "#31688e",
            "Exceptional High Growth Outliers": "#1f9e89",
-           "Consistent High Growth" : "#6ece58",
+           "Consistent High Growth" : "#26828e",
            "High Growth Volatile" : '#fde725'}
 fig = px.scatter_3d(
     cluster_df, 

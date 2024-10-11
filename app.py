@@ -22,7 +22,7 @@ if 'selected_sector' not in st.session_state:
     st.session_state.selected_sector = 'All'
 
 # App Layout
-st.title("Interactive Stock Cluster Visualization")
+st.title("Stock Cluster Visualization")
 
 # Sector filter dropdown
 sector_options = ['All'] + sorted(cluster_df['GICS Sector'].unique())

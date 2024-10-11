@@ -70,6 +70,7 @@ if selected_stock and selected_stock != '':
     stock_data = cluster_df[cluster_df['Security'] == selected_stock]
     cluster_type = stock_data['Cluster_Type'].iloc[0]
     cluster_number = stock_data['Cluster'].iloc[0]
+    sector = stock_data['GICS Sector'].iloc[0]
     hover_text = (
         f"<b>{selected_stock}</b><br><br>"
         f"Cluster_Type={cluster_type}<br>"
@@ -84,7 +85,7 @@ if selected_stock and selected_stock != '':
         z=stock_data['Trend Indicator'],
         mode='markers',
         marker=dict(size=8, color='red', symbol='circle'),  # Highlight the selected point with a distinct color
-        name=f"Selected: {selected_stock}<br>Cluster: {cluster_type}",
+        name=f"Selected: {selected_stock}<br>Cluster: {cluster_type}<br>Sector: {sector}",
         text=hover_text,
         hoverinfo='text',
         opacity=1.0  # Full opacity for the selected point
@@ -105,6 +106,5 @@ if selected_stock and selected_stock != '':
     col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}%")
     col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}%")
     col3.metric(label="Trend Indicator", value=f"{selected_metrics['Trend Indicator']:.2f}%")
-    col4.metric(label="Cluster", value=f"{selected_metrics['Cluster_Type']}")
 else:
     st.write("Select a stock to view its time series data.")

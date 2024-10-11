@@ -61,13 +61,24 @@ fig = px.scatter_3d(
 # If a stock is selected, add a separate trace to highlight the selected stock
 if selected_stock and selected_stock != '':
     stock_data = cluster_df[cluster_df['Security'] == selected_stock]
+    cluster_number = stock_data['Cluster'].iloc[0]
+    hover_text = (
+        f"Security: {selected_stock}<br>"
+        f"Cumulative Return: {stock_data['Cumulative Return'].iloc[0]:.2f}<br>"
+        f"Annualized Volatility: {stock_data['Annualized Volatility'].iloc[0]:.2f}<br>"
+        f"Trend Indicator: {stock_data['Trend Indicator'].iloc[0]:.2f}<br>"
+        f"Cluster: {cluster_number}"
+    )
+    
     fig.add_scatter3d(
         x=stock_data['Cumulative Return'],
         y=stock_data['Annualized Volatility'],
         z=stock_data['Trend Indicator'],
         mode='markers',
         marker=dict(size=8, color='red', symbol='circle'),  # Highlight the selected point with a distinct color
-        name=f"Selected: {selected_stock}",
+        name=f"Selected: {selected_stock} (Cluster {cluster_number})",
+        text=hover_text,
+        hoverinfo='text',
         opacity=1.0  # Full opacity for the selected point
     )
 
@@ -80,11 +91,12 @@ if selected_stock and selected_stock != '':
     time_fig = px.line(stock_time_series, x='Date', y='Adj Close', title=f'Time Series Data for {selected_stock}')
     st.plotly_chart(time_fig)
 
-    # Show metrics side by side
-    selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator']].iloc[0]
-    col1, col2, col3 = st.columns(3)
+    # Show metrics side by side, including the cluster number
+    selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator', 'Cluster']].iloc[0]
+    col1, col2, col3, col4 = st.columns(4)
     col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}")
     col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}")
     col3.metric(label="Trend Indicator", value=f"{selected_metrics['Trend Indicator']:.2f}")
+    col4.metric(label="Cluster", value=f"{selected_metrics['Cluster']}")
 else:
     st.write("Select a stock to view its time series data.")

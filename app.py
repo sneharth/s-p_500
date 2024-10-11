@@ -57,30 +57,29 @@ fig = px.scatter_3d(
     color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
 )
 
-# Display the interactive 3D plot
-selected_point = st.plotly_chart(fig, use_container_width=True)
+# Update plot if a stock is selected to show only that stock
+if selected_stock and selected_stock != '':
+    stock_data = cluster_df[cluster_df['Security'] == selected_stock]
+    fig = px.scatter_3d(
+        stock_data, 
+        x='Cumulative Return', 
+        y='Annualized Volatility', 
+        z='Trend Indicator', 
+        color='Cluster',
+        color_continuous_scale='Viridis',  # Keep the Viridis color scale
+    )
 
-# Capture the Plotly click event to select a stock
-if selected_point:
-    selected_data = st.session_state.get('plotly_click')
-    if selected_data:
-        # Get the index of the selected point
-        selected_index = selected_data['points'][0]['pointIndex']
-        # Get the selected stock's name and sector
-        selected_stock_name = cluster_df.iloc[selected_index]['Security']
-        selected_sector_name = cluster_df.iloc[selected_index]['GICS Sector']
-        # Update session state variables for selected stock and sector
-        st.session_state.selected_stock = selected_stock_name
-        st.session_state.selected_sector = selected_sector_name
+# Display the 3D plot
+st.plotly_chart(fig, use_container_width=True)
 
 # Time Series Plot for Adjusted Close
-if st.session_state.selected_stock:
-    stock_time_series = time_series_df[time_series_df['Security'] == st.session_state.selected_stock]
-    time_fig = px.line(stock_time_series, x='Date', y='Adj Close', title=f'Time Series Data for {st.session_state.selected_stock}')
+if selected_stock and selected_stock != '':
+    stock_time_series = time_series_df[time_series_df['Security'] == selected_stock]
+    time_fig = px.line(stock_time_series, x='Date', y='Adj Close', title=f'Time Series Data for {selected_stock}')
     st.plotly_chart(time_fig)
 
     # Show metrics side by side
-    selected_metrics = cluster_df[cluster_df['Security'] == st.session_state.selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator']].iloc[0]
+    selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator']].iloc[0]
     col1, col2, col3 = st.columns(3)
     col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}")
     col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}")

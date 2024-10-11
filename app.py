@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objs as go
 
 # Load datasets
 @st.cache
@@ -58,28 +57,21 @@ fig = px.scatter_3d(
     color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
 )
 
-# Convert Plotly figure to a FigureWidget to enable event handling
-fig_widget = go.FigureWidget(fig)
+# Display the interactive 3D plot
+selected_point = st.plotly_chart(fig, use_container_width=True)
 
-# Function to update selection when a point is clicked
-def update_selection(trace, points, selector):
-    if points.point_inds:
+# Capture the Plotly click event to select a stock
+if selected_point:
+    selected_data = st.session_state.get('plotly_click')
+    if selected_data:
         # Get the index of the selected point
-        selected_index = points.point_inds[0]
+        selected_index = selected_data['points'][0]['pointIndex']
         # Get the selected stock's name and sector
         selected_stock_name = cluster_df.iloc[selected_index]['Security']
         selected_sector_name = cluster_df.iloc[selected_index]['GICS Sector']
         # Update session state variables for selected stock and sector
         st.session_state.selected_stock = selected_stock_name
         st.session_state.selected_sector = selected_sector_name
-        # Trigger a rerun of the Streamlit app to update the display
-        st.experimental_rerun()
-
-# Attach the update_selection function to the scatter plot's click event
-fig_widget.data[0].on_click(update_selection)
-
-# Display the interactive 3D plot
-st.plotly_chart(fig_widget, use_container_width=True)
 
 # Time Series Plot for Adjusted Close
 if st.session_state.selected_stock:

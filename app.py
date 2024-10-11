@@ -61,7 +61,6 @@ fig = px.scatter_3d(
     z='Trend Indicator',
     color='Cluster_Type', 
     hover_name='Security',
-    # color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
     color_discrete_map=color_map
     opacity=0.6  # Set lower opacity for all points
 )

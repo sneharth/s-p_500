@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objs as go
 
 # Load datasets
 @st.cache
@@ -57,29 +58,37 @@ fig = px.scatter_3d(
     color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
 )
 
-# Update plot if a stock is selected to show only that stock
-if selected_stock and selected_stock != '':
-    stock_data = cluster_df[cluster_df['Security'] == selected_stock]
-    fig = px.scatter_3d(
-        stock_data, 
-        x='Cumulative Return', 
-        y='Annualized Volatility', 
-        z='Trend Indicator', 
-        color='Cluster',
-        color_continuous_scale='Viridis',  # Keep the Viridis color scale
-    )
+# Convert Plotly figure to a FigureWidget to enable event handling
+fig_widget = go.FigureWidget(fig)
 
-# Display the 3D plot
-st.plotly_chart(fig, use_container_width=True)
+# Function to update selection when a point is clicked
+def update_selection(trace, points, selector):
+    if points.point_inds:
+        # Get the index of the selected point
+        selected_index = points.point_inds[0]
+        # Get the selected stock's name and sector
+        selected_stock_name = cluster_df.iloc[selected_index]['Security']
+        selected_sector_name = cluster_df.iloc[selected_index]['GICS Sector']
+        # Update session state variables for selected stock and sector
+        st.session_state.selected_stock = selected_stock_name
+        st.session_state.selected_sector = selected_sector_name
+        # Trigger a rerun of the Streamlit app to update the display
+        st.experimental_rerun()
+
+# Attach the update_selection function to the scatter plot's click event
+fig_widget.data[0].on_click(update_selection)
+
+# Display the interactive 3D plot
+st.plotly_chart(fig_widget, use_container_width=True)
 
 # Time Series Plot for Adjusted Close
-if selected_stock and selected_stock != '':
-    stock_time_series = time_series_df[time_series_df['Security'] == selected_stock]
-    time_fig = px.line(stock_time_series, x='Date', y='Adj Close', title=f'Time Series Data for {selected_stock}')
+if st.session_state.selected_stock:
+    stock_time_series = time_series_df[time_series_df['Security'] == st.session_state.selected_stock]
+    time_fig = px.line(stock_time_series, x='Date', y='Adj Close', title=f'Time Series Data for {st.session_state.selected_stock}')
     st.plotly_chart(time_fig)
 
     # Show metrics side by side
-    selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator']].iloc[0]
+    selected_metrics = cluster_df[cluster_df['Security'] == st.session_state.selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator']].iloc[0]
     col1, col2, col3 = st.columns(3)
     col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}")
     col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}")

@@ -102,7 +102,7 @@ if selected_stock and selected_stock != '':
 
     # Show metrics side by side, including the cluster number
     selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator', 'Cluster_Type']].iloc[0]
-    col1, col2, col3, col4 = st.columns(3)
+    col1, col2, col3 = st.columns(3)
     col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}%")
     col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}%")
     col3.metric(label="Trend Indicator", value=f"{selected_metrics['Trend Indicator']:.2f}%")

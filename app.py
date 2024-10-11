@@ -46,9 +46,6 @@ selected_stock = st.selectbox(
 # Update session state
 st.session_state.selected_stock = selected_stock
 
-# Define colors for clusters explicitly
-cluster_colors = {0: 'red', 1: 'green', 2: 'blue', 3: 'purple', 4: 'orange', 5: 'brown'}
-
 # 3D Plot with cumulative return, annualized volatility, and trend indicator
 fig = px.scatter_3d(
     cluster_df, 
@@ -57,8 +54,7 @@ fig = px.scatter_3d(
     z='Trend Indicator',
     color='Cluster', 
     hover_name='Security',
-    category_orders={"Cluster": [0, 1, 2, 3, 4, 5]},  # Keep consistent cluster categories
-    color_discrete_map=cluster_colors  # Explicitly map colors to each cluster
+    color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
 )
 
 # Update plot if a stock is selected to show only that stock
@@ -70,8 +66,7 @@ if selected_stock and selected_stock != '':
         y='Annualized Volatility', 
         z='Trend Indicator', 
         color='Cluster',
-        category_orders={"Cluster": [0, 1, 2, 3, 4, 5]},
-        color_discrete_map=cluster_colors
+        color_continuous_scale='Viridis',  # Keep the Viridis color scale
     )
 
 # Display the 3D plot
@@ -91,5 +86,5 @@ if st.button('Reset'):
     st.session_state.selected_stock = ''
     st.session_state.selected_sector = 'All'
     # Manually clear out the input fields for the current view
-    selected_stock = ''
     selected_sector = 'All'
+    selected_stock = ''

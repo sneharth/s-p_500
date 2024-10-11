@@ -52,7 +52,7 @@ fig = px.scatter_3d(
     x='Cumulative Return', 
     y='Annualized Volatility', 
     z='Trend Indicator',
-    color='Cluster_Type', 
+    color='Cluster', 
     hover_name='Security',
     color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
     opacity=0.6  # Set lower opacity for all points
@@ -61,7 +61,7 @@ fig = px.scatter_3d(
 # If a stock is selected, add a separate trace to highlight the selected stock
 if selected_stock and selected_stock != '':
     stock_data = cluster_df[cluster_df['Security'] == selected_stock]
-    cluster_number = stock_data['Cluster'].iloc[0]
+    cluster_type = stock_data['Cluster_Type'].iloc[0]
     hover_text = (
         f"<b>{selected_stock}</b><br><br>"
         f"Cumulative Return={stock_data['Cumulative Return'].iloc[0]:.2f}<br>"
@@ -76,7 +76,7 @@ if selected_stock and selected_stock != '':
         z=stock_data['Trend Indicator'],
         mode='markers',
         marker=dict(size=8, color='red', symbol='circle'),  # Highlight the selected point with a distinct color
-        name=f"Selected: {selected_stock} (Cluster {cluster_number})",
+        name=f"Selected: {selected_stock} (Cluster {cluster_type})",
         text=hover_text,
         hoverinfo='text',
         opacity=1.0  # Full opacity for the selected point
@@ -94,9 +94,9 @@ if selected_stock and selected_stock != '':
     # Show metrics side by side, including the cluster number
     selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator', 'Cluster']].iloc[0]
     col1, col2, col3, col4 = st.columns(4)
-    col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}")
-    col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}")
-    col3.metric(label="Trend Indicator", value=f"{selected_metrics['Trend Indicator']:.3f}")
+    col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']}%")
+    col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']}%")
+    col3.metric(label="Trend Indicator", value=f"{selected_metrics['Trend Indicator']}%")
     col4.metric(label="Cluster", value=f"{selected_metrics['Cluster']}")
 else:
     st.write("Select a stock to view its time series data.")

@@ -77,5 +77,12 @@ if selected_stock and selected_stock != '':
     stock_time_series = time_series_df[time_series_df['Security'] == selected_stock]
     time_fig = px.line(stock_time_series, x='Date', y='Adj Close', title=f'Time Series Data for {selected_stock}')
     st.plotly_chart(time_fig)
+
+    # Show metrics side by side
+    selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator']].iloc[0]
+    col1, col2, col3 = st.columns(3)
+    col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}")
+    col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}")
+    col3.metric(label="Trend Indicator", value=f"{selected_metrics['Trend Indicator']:.2f}")
 else:
     st.write("Select a stock to view its time series data.")

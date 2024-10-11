@@ -61,7 +61,7 @@ fig = px.scatter_3d(
     z='Trend Indicator',
     color='Cluster_Type', 
     hover_name='Security',
-    color_discrete_map=color_map
+    color_discrete_map=color_map,
     opacity=0.6  # Set lower opacity for all points
 )
 

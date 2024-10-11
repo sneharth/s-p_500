@@ -55,18 +55,20 @@ fig = px.scatter_3d(
     color='Cluster', 
     hover_name='Security',
     color_continuous_scale='Viridis',  # Use the Viridis color scale for continuous color mapping
+    opacity=0.6  # Set lower opacity for all points
 )
 
-# Update plot if a stock is selected to show only that stock
+# If a stock is selected, add a separate trace to highlight the selected stock
 if selected_stock and selected_stock != '':
     stock_data = cluster_df[cluster_df['Security'] == selected_stock]
-    fig = px.scatter_3d(
-        stock_data, 
-        x='Cumulative Return', 
-        y='Annualized Volatility', 
-        z='Trend Indicator', 
-        color='Cluster',
-        color_continuous_scale='Viridis',  # Keep the Viridis color scale
+    fig.add_scatter3d(
+        x=stock_data['Cumulative Return'],
+        y=stock_data['Annualized Volatility'],
+        z=stock_data['Trend Indicator'],
+        mode='markers',
+        marker=dict(size=8, color='red', symbol='circle'),  # Highlight the selected point with a distinct color
+        name=f"Selected: {selected_stock}",
+        opacity=1.0  # Full opacity for the selected point
     )
 
 # Display the 3D plot

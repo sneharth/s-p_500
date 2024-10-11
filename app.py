@@ -15,7 +15,7 @@ def load_time_series_data():
 cluster_df = load_cluster_data()
 time_series_df = load_time_series_data()
 
-# Define session state variables
+# Define session state variables with defaults
 if 'selected_stock' not in st.session_state:
     st.session_state.selected_stock = ''
 if 'selected_sector' not in st.session_state:
@@ -54,7 +54,8 @@ fig = px.scatter_3d(
     z='Trend Indicator',
     color='Cluster', 
     hover_name='Security',
-    color_continuous_scale='Viridis'  # Better distinct color scale
+    category_orders={"Cluster": [0, 1, 2, 3, 4, 5]},  # Keep consistent cluster categories
+    color_discrete_sequence=px.colors.qualitative.T10  # Use a distinct color palette
 )
 
 # Update plot if a stock is selected to show only that stock
@@ -66,7 +67,8 @@ if selected_stock and selected_stock != '':
         y='Annualized Volatility', 
         z='Trend Indicator', 
         color='Cluster',
-        color_continuous_scale='Viridis'
+        category_orders={"Cluster": [0, 1, 2, 3, 4, 5]},
+        color_discrete_sequence=px.colors.qualitative.T10
     )
 
 # Display the 3D plot
@@ -80,7 +82,8 @@ if selected_stock and selected_stock != '':
 else:
     st.write("Select a stock to view its time series data.")
 
-# Reset button functionality
+# Reset button functionality to reliably reset session state variables
 if st.button('Reset'):
     st.session_state.selected_stock = ''
     st.session_state.selected_sector = 'All'
+    st.experimental_rerun()  # Force a rerun to ensure the interface is fully reset

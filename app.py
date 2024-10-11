@@ -93,7 +93,7 @@ if selected_stock and selected_stock != '':
     st.plotly_chart(time_fig)
 
     # Show metrics side by side, including the cluster number
-    selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator', 'Cluster']].iloc[0]
+    selected_metrics = cluster_df[cluster_df['Security'] == selected_stock][['Cumulative Return', 'Annualized Volatility', 'Trend Indicator', 'Cluster_Type']].iloc[0]
     col1, col2, col3, col4 = st.columns(4)
     col1.metric(label="Cumulative Return", value=f"{selected_metrics['Cumulative Return']:.2f}%")
     col2.metric(label="Annualized Volatility", value=f"{selected_metrics['Annualized Volatility']:.2f}%")

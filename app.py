@@ -48,10 +48,10 @@ st.session_state.selected_stock = selected_stock
 
 # 3D Plot with cumulative return, annualized volatility, and trend indicator
 
-color_map = { "Stable Low Growth" : "red",
-           "Moderate Growth High Volatility" : "green",
-           "Underperforming High Risk" : "blue",
-           "Exceptional High Growth Outliers": "purple",
+color_map = { "Stable Low Growth" : "#b5de2b",
+           "Moderate Growth High Volatility" : "#482878",
+           "Underperforming High Risk" : "#31688e",
+           "Exceptional High Growth Outliers": "#1f9e89",
            "Consistent High Growth" : "#6ece58",
            "High Growth Volatile" : '#fde725'}
 fig = px.scatter_3d(

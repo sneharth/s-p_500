@@ -97,7 +97,8 @@ st.plotly_chart(fig, use_container_width=True)
 # Time Series Plot for Adjusted Close
 if selected_stock and selected_stock != '':
     stock_time_series = time_series_df[time_series_df['Security'] == selected_stock]
-    time_fig = px.line(stock_time_series, x='Date', y='Adj Close', title=f'Time Series Data for {selected_stock}')
+    stock_time_series.rename(columns={"Close": "Adj. Close"}, inplace=True)
+    time_fig = px.line(stock_time_series, x='Date', y='Adj. Close', title=f'Time Series Data for {selected_stock}')
     st.plotly_chart(time_fig)
 
     # Show metrics side by side, including the cluster number
